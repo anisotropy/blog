@@ -30,15 +30,13 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   ).toLocaleString("ko-KR");
 
   const content = pipe(
-    markdownBlocks,
-    n2m.toMarkdownString,
-    O.get(["parent"]),
+    n2m.toMarkdownString(markdownBlocks).parent,
     separateBlockQuotes,
     createFootnote
   );
 
   return (
-    <div className="max-w-prose mx-auto my-10 text-justify break-all leading-[1.6]">
+    <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.6]">
       <section className="mb-6">
         <h1 className="text-center text-2xl mb-4">{title}</h1>
         <div className="text-right text-sm">정호득 {lastEditedTime}</div>

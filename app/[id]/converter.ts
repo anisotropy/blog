@@ -15,29 +15,39 @@ export const separateBlockQuotes = (md: string): string => {
 // createFootnote
 // -------------------
 
-export const FOOTNOTES = "footnotes";
+export const FOOTNOTE = "footnote";
+export const FOOTNOTE_LIST = "footnote-list";
+
+/** 문단이 [^숫자](C)로 시작하는 곳을 찾아, C부터 다음 C 직전까지 <div class="footnote">로 묶는다. 문단 시작이 아니면 그대로 반환한다. */
+export const wrapFootnote = (markdown: string): string => {
+  return markdown
+    .split(/(^|\n|\n\n)(?=\[\^[^\]]+\])/)
+    .map((part) => {
+      const trimmed = part.trimStart();
+      if (/^\[\^[^\]]+\]/.test(trimmed)) {
+        const block = part.trimEnd();
+        return block ? `<div class="${FOOTNOTE}">\n\n${block}\n\n</div>` : part;
+      }
+      return part;
+    })
+    .join("");
+};
+
+/** <div class="footnote">가 있는 전체 영역을 <div class="footnote-list">로 감싼다 */
+export const wrapFootnoteList = (markdown: string): string => {
+  const footnoteBlockRegex = new RegExp(
+    `((?:<div class=\"${FOOTNOTE}\">[\\s\\S]*?</div>\\s*)+)`
+  );
+  return markdown.replace(footnoteBlockRegex, (match) =>
+    match.trim()
+      ? `<div class="${FOOTNOTE_LIST}">\n\n${match.trim()}\n\n</div>`
+      : match
+  );
+};
 
 /** '[^숫자]'를 <sup>숫자</sup>로 변환한다 */
 export const convertRefToSup = (markdown: string): string =>
   markdown.replace(/\[\^([^\]]+)\]/g, "<sup>$1</sup>");
 
-/**
- * 문단이 [^숫자]로 시작하면, 그 위에 <div class="footnotes">를 추가하고 마크다운 마지막에 </div>를 추가한다.
- */
-export const makeFootnoteSection = (markdown: string): string => {
-  const lines = markdown.split("\n");
-  const footnoteStartIndex = lines.findIndex((line) =>
-    /^\s*\[\^[^\]]+\]/.test(line)
-  );
-  if (footnoteStartIndex === -1) return markdown;
-
-  const contentLines = lines.slice(0, footnoteStartIndex);
-  const footnoteLines = lines.slice(footnoteStartIndex);
-  const content = contentLines.join("\n");
-  const footnotes = footnoteLines.join("\n");
-  const separator = content ? "\n" : "";
-  return `${content}${separator}<div class="${FOOTNOTES}">\n\n\n${footnotes}\n\n\n</div>`;
-};
-
 export const createFootnote = (markdown: string) =>
-  pipe(markdown, makeFootnoteSection, convertRefToSup);
+  pipe(markdown, wrapFootnote, wrapFootnoteList, convertRefToSup);

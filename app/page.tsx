@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { O } from "./fp-tool";
+import Link from "next/link";
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 
@@ -26,7 +27,12 @@ export default async function Home() {
           "text",
           "content",
         ]);
-        return title;
+        const id = O.get(result, ["id"]);
+        return (
+          <li key={id}>
+            <Link href={`/${id}`}>{title}</Link>
+          </li>
+        );
       })}
     </div>
   );
