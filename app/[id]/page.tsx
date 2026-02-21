@@ -7,6 +7,16 @@ import { createFootnote } from "./converter";
 const notion = new Client({ auth: process.env.NOTION_KEY });
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
+export async function generateMetadata(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await props.params;
+  const metadata = await notion.pages.retrieve({ page_id: id });
+  const title =
+    O.get(metadata, ["properties", "이름", "title", 0, "plain_text"]) ?? "";
+  return { title, description: "" };
+}
+
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
 
