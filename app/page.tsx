@@ -19,31 +19,36 @@ export default async function Home() {
 
   return (
     <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
-      <h1 className="text-3xl">짧은 글</h1>
-      <h2 className="text-xl mt-10">목차</h2>
-      <ul className="list-disc ml-3">
-        {results.map((result) => {
-          const title = O.get(result, [
-            "properties",
-            "이름",
-            "title",
-            0,
-            "text",
-            "content",
-          ]);
-          const createdTime = new Date(
-            O.get(result, ["created_time"]) ?? ""
-          ).toLocaleString("ko-KR");
-          const id = O.get(result, ["id"]);
-          return (
-            <li key={id}>
-              <Link className="underline decoration-current/30" href={`/${id}`}>
-                {title} ({createdTime})
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <h1 className="text-3xl text-center">짧은 글</h1>
+      <section className="ml-3">
+        <h2 className="text-xl mt-20">목차</h2>
+        <ul className="list-disc ml-3 mt-3">
+          {results.map((result) => {
+            const title = O.get(result, [
+              "properties",
+              "이름",
+              "title",
+              0,
+              "text",
+              "content",
+            ]);
+            const createdTime = new Date(
+              O.get(result, ["created_time"]) ?? ""
+            ).toLocaleString("ko-KR", { dateStyle: "long" });
+            const id = O.get(result, ["id"]);
+            return (
+              <li key={id} className="my-2">
+                <Link
+                  className="underline decoration-current/30"
+                  href={`/${id}`}
+                >
+                  {title} ({createdTime})
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </div>
   );
 }

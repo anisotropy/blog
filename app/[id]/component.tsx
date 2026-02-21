@@ -4,6 +4,7 @@ import { createContext, useContext } from "react";
 import Markdown, { Components } from "react-markdown";
 import { FOOTNOTE, FOOTNOTE_LIST } from "./converter";
 import rehypeRaw from "rehype-raw";
+import Link from "next/link";
 
 const BlockquoteContext = createContext(false);
 
@@ -61,7 +62,7 @@ const Anchor: Components["a"] = (props) => (
     {...props}
     target="_blank"
     rel="noopener noreferrer"
-    className="underline"
+    className="underline decoration-current/30"
   />
 );
 
@@ -91,6 +92,11 @@ export const PageViewer = (props: {
   );
   return (
     <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
+      <nav className="mb-10 text-right">
+        <Link href="/" className="text-[0.8em] underline decoration-current/30">
+          목차로 이동
+        </Link>
+      </nav>
       <section className="mb-8">
         <h1 className="text-center text-2xl">{title}</h1>
         <div className="ml-[1em] mt-8">
