@@ -57,14 +57,30 @@ const Div: Components["div"] = (props) => {
   return <div>{props.children}</div>;
 };
 
-const Anchor: Components["a"] = (props) => (
-  <a
-    {...props}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="underline decoration-current/30"
-  />
-);
+// TODO: 스타일을 global.css에 추가
+const Anchor: Components["a"] = (props) =>
+  props.href ? (
+    <Link
+      href={props.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline decoration-current/30"
+    >
+      {props.children}
+    </Link>
+  ) : (
+    props.children
+  );
+
+const Span: Components["span"] = (props) => {
+  if (props.className === "english")
+    return (
+      <span className="font-main-en hyphens-auto" lang="en">
+        {props.children}
+      </span>
+    );
+  return props.children;
+};
 
 export const PageViewer = (props: {
   content: string;
@@ -85,7 +101,7 @@ export const PageViewer = (props: {
     { timeZone: "Asia/Seoul" }
   );
   return (
-    <div className="break-all">
+    <div>
       <nav className="mb-10 text-right">
         <Link href="/" className="text-[0.9em] underline decoration-current/30">
           목차로 이동
@@ -109,6 +125,7 @@ export const PageViewer = (props: {
             blockquote: Quote,
             div: Div,
             a: Anchor,
+            span: Span,
           }}
         >
           {props.content}

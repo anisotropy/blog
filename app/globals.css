@@ -32,3 +32,11 @@ ul {
   list-style: disc;
   padding-inline-start: 1.5em;
 }
+
+.hyphens-auto {
+  hyphens: auto;
+}
+
+.font-main-en {
+  font-family: var(--font-main-en);
+}

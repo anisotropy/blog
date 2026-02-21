@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { wrapFootnote, wrapFootnoteList } from "./converter";
+import { wrapFootnote, wrapFootnoteList, wrapEnglish } from "./converter";
 
 describe("wrapFootnote", () => {
   it("'[^숫자]'앞에 내용이 있으면 그대로 반환한다.", () => {
@@ -74,5 +74,75 @@ describe("wrapFootnoteList", () => {
 
   it("빈 문자열은 그대로 반환한다", () => {
     expect(wrapFootnoteList("")).toBe("");
+  });
+});
+
+describe("wrapEnglish", () => {
+  it("영어 단어를 span으로 감싼다", () => {
+    expect(wrapEnglish("Hello")).toBe(
+      '<span class="english">Hello</span>'
+    );
+  });
+
+  it("여러 영어 단어를 각각 span으로 감싼다", () => {
+    expect(wrapEnglish("Hello world")).toBe(
+      '<span class="english">Hello</span> <span class="english">world</span>'
+    );
+  });
+
+  it("한글과 영어가 섞여 있으면 영어만 감싼다", () => {
+    expect(wrapEnglish("안녕 Hello 세계")).toBe(
+      '안녕 <span class="english">Hello</span> 세계'
+    );
+  });
+
+  it("아포스트로피가 포함된 단어를 감싼다", () => {
+    expect(wrapEnglish("don't")).toBe(
+      '<span class="english">don\'t</span>'
+    );
+  });
+
+  it("마침표와 하이픈이 포함된 단어를 감싼다", () => {
+    expect(wrapEnglish("e.g. well-known")).toBe(
+      '<span class="english">e.g.</span> <span class="english">well-known</span>'
+    );
+  });
+
+  it("한글만 있으면 그대로 반환한다", () => {
+    const input = "한글만 있는 문장";
+    expect(wrapEnglish(input)).toBe(input);
+  });
+
+  it("빈 문자열은 그대로 반환한다", () => {
+    expect(wrapEnglish("")).toBe("");
+  });
+
+  it("공백만 있으면 그대로 반환한다", () => {
+    expect(wrapEnglish("   ")).toBe("   ");
+  });
+
+  it("숫자만 있으면 감싸지 않는다", () => {
+    expect(wrapEnglish("123")).toBe("123");
+  });
+
+  it("마크다운 구문과 함께 있어도 영어는 감싼다", () => {
+    expect(wrapEnglish("**bold**")).toBe(
+      '**<span class="english">bold</span>**'
+    );
+  });
+
+  it("마크다운 링크 [] 부분은 감싸지 않는다", () => {
+    expect(wrapEnglish("[GitHub](https://github.com)")).toBe(
+      "[GitHub](https://github.com)"
+    );
+    expect(wrapEnglish("참고 [documentation](https://example.com) 링크")).toBe(
+      "참고 [documentation](https://example.com) 링크"
+    );
+  });
+
+  it("마크다운 이미지 [] 부분은 감싸지 않는다", () => {
+    expect(wrapEnglish("![alt text](image.png)")).toBe(
+      "![alt text](image.png)"
+    );
   });
 });
