@@ -9,7 +9,7 @@ const nanumMyeongjo = Nanum_Myeongjo({
 });
 
 export const metadata: Metadata = {
-  title: "",
+  title: "짧은 글",
   description: "",
 };
 
