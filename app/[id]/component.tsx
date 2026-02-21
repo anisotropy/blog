@@ -1,14 +1,15 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { Components } from "react-markdown";
+import Markdown, { Components } from "react-markdown";
 import { FOOTNOTE, FOOTNOTE_LIST } from "./converter";
+import rehypeRaw from "rehype-raw";
 
 const BlockquoteContext = createContext(false);
 
 const FootnoteContext = createContext(false);
 
-export const Paragraph: Components["p"] = (props) => {
+const Paragraph: Components["p"] = (props) => {
   const isInBlockquote = useContext(BlockquoteContext);
   const isInFootnoteList = useContext(FootnoteContext);
   const className = [
@@ -21,7 +22,7 @@ export const Paragraph: Components["p"] = (props) => {
   return <p className={className}>{props.children}</p>;
 };
 
-export const Quote: Components["blockquote"] = (props) => {
+const Quote: Components["blockquote"] = (props) => {
   const isInFootnoteList = useContext(FootnoteContext);
   return (
     <blockquote
@@ -36,7 +37,7 @@ export const Quote: Components["blockquote"] = (props) => {
   );
 };
 
-export const Div: Components["div"] = (props) => {
+const Div: Components["div"] = (props) => {
   if (props.className === FOOTNOTE) {
     return <div className="my-2 ml-3 text-[0.93em]">{props.children}</div>;
   }
@@ -55,7 +56,7 @@ export const Div: Components["div"] = (props) => {
   return <div>{props.children}</div>;
 };
 
-export const Anchor: Components["a"] = (props) => (
+const Anchor: Components["a"] = (props) => (
   <a
     {...props}
     target="_blank"
@@ -64,10 +65,57 @@ export const Anchor: Components["a"] = (props) => (
   />
 );
 
-export const OrderedList: Components["ol"] = (props) => (
+const OrderedList: Components["ol"] = (props) => (
   <ol className="list-decimal ml-3">{props.children}</ol>
 );
 
-export const UnorderedList: Components["ul"] = (props) => (
+const UnorderedList: Components["ul"] = (props) => (
   <ol className="list-disc ml-3">{props.children}</ol>
 );
+
+export const PageViewer = (props: {
+  content: string;
+  metadata: {
+    title: string;
+    author: string;
+    createdTime: string;
+    lastEditedTime: string;
+  };
+}) => {
+  const { title, author } = props.metadata;
+  const lastEditedTime = new Date(props.metadata.lastEditedTime).toLocaleString(
+    "ko-KR"
+  );
+  const createdTime = new Date(props.metadata.createdTime).toLocaleString(
+    "ko-KR"
+  );
+  return (
+    <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
+      <section className="mb-8">
+        <h1 className="text-center text-2xl">{title}</h1>
+        <div className="ml-[1em] mt-8">
+          <div className="text-[0.8em] leading-[1.5em]">
+            <div>작성자: {author}</div>
+            <div>작성일: {createdTime}</div>
+            <div>마지막 수정일: {lastEditedTime}</div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <Markdown
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            p: Paragraph,
+            blockquote: Quote,
+            div: Div,
+            a: Anchor,
+            ol: OrderedList,
+            ul: UnorderedList,
+          }}
+        >
+          {props.content}
+        </Markdown>
+      </section>
+    </div>
+  );
+};
