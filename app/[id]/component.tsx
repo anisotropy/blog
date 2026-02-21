@@ -66,14 +66,6 @@ const Anchor: Components["a"] = (props) => (
   />
 );
 
-const OrderedList: Components["ol"] = (props) => (
-  <ol className="list-decimal ml-4">{props.children}</ol>
-);
-
-const UnorderedList: Components["ul"] = (props) => (
-  <ol className="list-disc ml-4">{props.children}</ol>
-);
-
 export const PageViewer = (props: {
   content: string;
   metadata: {
@@ -117,8 +109,6 @@ export const PageViewer = (props: {
             blockquote: Quote,
             div: Div,
             a: Anchor,
-            ol: OrderedList,
-            ul: UnorderedList,
           }}
         >
           {props.content}

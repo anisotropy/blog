@@ -22,3 +22,12 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+ol {
+  list-style: decimal;
+}
+
+ul {
+  list-style: disc;
+  padding-inline-start: 1.5em;
+}

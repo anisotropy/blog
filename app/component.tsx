@@ -26,7 +26,7 @@ export const HomeViewer = (props: {
     <h1 className="text-3xl text-center">짧은 글</h1>
     <section className="ml-3">
       <h2 className="text-xl mt-20">목차</h2>
-      <ul className="list-disc ml-3 mt-3">
+      <ul className="mt-3">
         {props.pageList.map(({ id, title, createdTime }) => (
           <PageListItem
             key={id}
