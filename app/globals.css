@@ -2,13 +2,13 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-nanum-myeongjo);
+  --font-sans: var(--font-main-kr);
 }
 
 @media (prefers-color-scheme: dark) {

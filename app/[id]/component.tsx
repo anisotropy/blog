@@ -28,7 +28,7 @@ const Quote: Components["blockquote"] = (props) => {
   return (
     <blockquote
       className={
-        isInFootnoteList ? "text-[0.87em] pl-3 my-2" : "text-[0.93em] pl-4 my-4"
+        isInFootnoteList ? "text-[0.9em] pl-3 my-2" : "text-[0.93em] pl-4 my-4"
       }
     >
       <BlockquoteContext.Provider value={true}>
@@ -93,14 +93,14 @@ export const PageViewer = (props: {
   return (
     <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
       <nav className="mb-10 text-right">
-        <Link href="/" className="text-[0.8em] underline decoration-current/30">
+        <Link href="/" className="text-[0.9em] underline decoration-current/30">
           목차로 이동
         </Link>
       </nav>
       <section className="mb-8">
         <h1 className="text-center text-2xl">{title}</h1>
         <div className="ml-[1em] mt-8">
-          <div className="text-[0.8em] leading-[1.5em]">
+          <div className="text-[0.9em] leading-[1.5em]">
             <div>작성자: {author}</div>
             <div>작성일: {createdTime}</div>
             <div>마지막 수정일: {lastEditedTime}</div>

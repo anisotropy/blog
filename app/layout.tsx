@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Nanum_Myeongjo } from "next/font/google";
+import { Noto_Serif_KR } from "next/font/google";
 import "./globals.css";
 
-const nanumMyeongjo = Nanum_Myeongjo({
-  variable: "--font-nanum-myeongjo",
+const mainKrFont = Noto_Serif_KR({
+  variable: "--font-main-kr",
   weight: ["400", "700", "800"],
   subsets: ["latin"],
 });
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${nanumMyeongjo.variable} antialiased`}>
+    <html lang="ko" className={`${mainKrFont.variable} antialiased`}>
       <body>{children}</body>
     </html>
   );
