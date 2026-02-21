@@ -8,6 +8,7 @@ const PageListItem = (props: {
   const { id, title } = props;
   const createdTime = new Date(props.createdTime).toLocaleString("ko-KR", {
     dateStyle: "long",
+    timeZone: "Asia/Seoul",
   });
   return (
     <li key={id} className="my-2">

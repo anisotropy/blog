@@ -85,10 +85,12 @@ export const PageViewer = (props: {
 }) => {
   const { title, author } = props.metadata;
   const lastEditedTime = new Date(props.metadata.lastEditedTime).toLocaleString(
-    "ko-KR"
+    "ko-KR",
+    { timeZone: "Asia/Seoul" }
   );
   const createdTime = new Date(props.metadata.createdTime).toLocaleString(
-    "ko-KR"
+    "ko-KR",
+    { timeZone: "Asia/Seoul" }
   );
   return (
     <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
