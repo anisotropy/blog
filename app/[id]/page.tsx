@@ -2,7 +2,7 @@ import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { PageViewer } from "./component";
 import { O, pipe } from "../fp-tool";
-import { createFootnote, wrapEnglish } from "./converter";
+import { createFootnote, wrapEnglish, wrapUrl } from "./converter";
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -35,6 +35,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const content = pipe(
     n2m.toMarkdownString(markdownBlocks).parent,
     wrapEnglish,
+    wrapUrl,
     createFootnote
   );
 

@@ -73,12 +73,20 @@ const Anchor: Components["a"] = (props) =>
   );
 
 const Span: Components["span"] = (props) => {
-  if (props.className === "english")
+  if (props.className === "english") {
     return (
       <span className="font-main-en hyphens-auto" lang="en">
         {props.children}
       </span>
     );
+  }
+  if (props.className === "url") {
+    return (
+      <span className="font-main-en break-all" lang="en">
+        {props.children}
+      </span>
+    );
+  }
   return props.children;
 };
 

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { wrapFootnote, wrapFootnoteList, wrapEnglish } from "./converter";
+import {
+  wrapFootnote,
+  wrapFootnoteList,
+  wrapEnglish,
+  wrapUrl,
+} from "./converter";
 
 describe("wrapFootnote", () => {
   it("'[^숫자]'앞에 내용이 있으면 그대로 반환한다.", () => {
@@ -79,9 +84,7 @@ describe("wrapFootnoteList", () => {
 
 describe("wrapEnglish", () => {
   it("영어 단어를 span으로 감싼다", () => {
-    expect(wrapEnglish("Hello")).toBe(
-      '<span class="english">Hello</span>'
-    );
+    expect(wrapEnglish("Hello")).toBe('<span class="english">Hello</span>');
   });
 
   it("여러 영어 단어를 각각 span으로 감싼다", () => {
@@ -97,9 +100,7 @@ describe("wrapEnglish", () => {
   });
 
   it("아포스트로피가 포함된 단어를 감싼다", () => {
-    expect(wrapEnglish("don't")).toBe(
-      '<span class="english">don\'t</span>'
-    );
+    expect(wrapEnglish("don't")).toBe('<span class="english">don\'t</span>');
   });
 
   it("마침표와 하이픈이 포함된 단어를 감싼다", () => {
@@ -131,18 +132,65 @@ describe("wrapEnglish", () => {
     );
   });
 
-  it("마크다운 링크 [] 부분은 감싸지 않는다", () => {
+  it("마크다운 링크의 () 부분은 감싸지 않는다", () => {
     expect(wrapEnglish("[GitHub](https://github.com)")).toBe(
-      "[GitHub](https://github.com)"
+      '[<span class="english">GitHub</span>](https://github.com)'
     );
     expect(wrapEnglish("참고 [documentation](https://example.com) 링크")).toBe(
-      "참고 [documentation](https://example.com) 링크"
+      '참고 [<span class="english">documentation</span>](https://example.com) 링크'
     );
   });
 
-  it("마크다운 이미지 [] 부분은 감싸지 않는다", () => {
+  it("마크다운 이미지의 () 부분은 감싸지 않는다", () => {
     expect(wrapEnglish("![alt text](image.png)")).toBe(
-      "![alt text](image.png)"
+      '![<span class="english">alt</span> <span class="english">text</span>](image.png)'
     );
+  });
+
+  it("URL은 감싸지 않는다", () => {
+    expect(wrapEnglish("자세한 내용은 https://example.com 참고")).toBe(
+      "자세한 내용은 https://example.com 참고"
+    );
+    expect(wrapEnglish("see https://example.com here")).toBe(
+      '<span class="english">see</span> https://example.com <span class="english">here</span>'
+    );
+  });
+});
+
+describe("wrapUrl", () => {
+  it("URL을 span으로 감싼다", () => {
+    expect(wrapUrl("https://example.com")).toBe(
+      '<span class="url">https://example.com</span>'
+    );
+  });
+
+  it("여러 URL을 각각 span으로 감싼다", () => {
+    expect(wrapUrl("https://a.com 그리고 https://b.com")).toBe(
+      '<span class="url">https://a.com</span> 그리고 <span class="url">https://b.com</span>'
+    );
+  });
+
+  it("마크다운 링크의 () 부분은 감싸지 않는다", () => {
+    expect(wrapUrl("[https://github.com](https://github.com)")).toBe(
+      '[<span class="url">https://github.com</span>](https://github.com)'
+    );
+  });
+
+  it("마크다운 이미지의 () 부분은 감싸지 않는다", () => {
+    expect(
+      wrapUrl("![https://example.com/image.png](https://example.com/image.png)")
+    ).toBe(
+      '![<span class="url">https://example.com/image.png</span>](https://example.com/image.png)'
+    );
+  });
+
+  it("일반 텍스트의 URL은 감싼다", () => {
+    expect(wrapUrl("자세한 내용은 https://example.com 참고")).toBe(
+      '자세한 내용은 <span class="url">https://example.com</span> 참고'
+    );
+  });
+
+  it("빈 문자열은 그대로 반환한다", () => {
+    expect(wrapUrl("")).toBe("");
   });
 });
