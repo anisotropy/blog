@@ -67,11 +67,11 @@ const Anchor: Components["a"] = (props) => (
 );
 
 const OrderedList: Components["ol"] = (props) => (
-  <ol className="list-decimal ml-3">{props.children}</ol>
+  <ol className="list-decimal ml-4">{props.children}</ol>
 );
 
 const UnorderedList: Components["ul"] = (props) => (
-  <ol className="list-disc ml-3">{props.children}</ol>
+  <ol className="list-disc ml-4">{props.children}</ol>
 );
 
 export const PageViewer = (props: {
