@@ -2,9 +2,16 @@ import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import { Anchor, Div, Paragraph, Quote } from "./component";
+import {
+  Anchor,
+  Div,
+  OrderedList,
+  Paragraph,
+  Quote,
+  UnorderedList,
+} from "./component";
 import { O, pipe } from "../fp-tool";
-import { separateBlockQuotes, createFootnote } from "./converter";
+import { createFootnote } from "./converter";
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -31,12 +38,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   const content = pipe(
     n2m.toMarkdownString(markdownBlocks).parent,
-    separateBlockQuotes,
     createFootnote
   );
 
   return (
-    <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.6]">
+    <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
       <section className="mb-6">
         <h1 className="text-center text-2xl mb-4">{title}</h1>
         <div className="text-right text-sm">정호득 {lastEditedTime}</div>
@@ -44,7 +50,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       <section>
         <Markdown
           rehypePlugins={[rehypeRaw]}
-          components={{ p: Paragraph, blockquote: Quote, div: Div, a: Anchor }}
+          components={{
+            p: Paragraph,
+            blockquote: Quote,
+            div: Div,
+            a: Anchor,
+            ol: OrderedList,
+            ul: UnorderedList,
+          }}
         >
           {content}
         </Markdown>

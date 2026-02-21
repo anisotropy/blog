@@ -1,17 +1,6 @@
 import { pipe } from "../fp-tool";
 
 //
-// separateBlockQuotes
-// -----------------------
-
-/** 연속된 blockquote(>) 사이에 빈 줄을 넣어 별도 blockquote로 분리 */
-export const separateBlockQuotes = (md: string): string => {
-  return md.replace(/(  )?\n(>)/g, (match, lineBreakSpaces, gt) =>
-    lineBreakSpaces ? match : `\n\n${gt}`
-  );
-};
-
-//
 // createFootnote
 // -------------------
 

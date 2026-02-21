@@ -10,34 +10,35 @@ const FootnoteContext = createContext(false);
 
 export const Paragraph: Components["p"] = (props) => {
   const isInBlockquote = useContext(BlockquoteContext);
-  const isInFootnoteSection = useContext(FootnoteContext);
-  if (isInFootnoteSection && isInBlockquote) {
-    return <p className="text-[0.87em] pl-3 my-2">{props.children}</p>;
-  }
-  if (isInFootnoteSection) {
-    return (
-      <p className="text-[0.93em] indent-[1em] first:indent-[-0.7em]">
-        {props.children}
-      </p>
-    );
-  }
-  if (isInBlockquote) {
-    return <p className="text-[0.93em] pl-4 my-4">{props.children}</p>;
-  }
-  return <p className="indent-[1em]">{props.children}</p>;
+  const isInFootnoteList = useContext(FootnoteContext);
+  const className = [
+    "my-2",
+    !isInBlockquote ? "indent-[1em]" : null,
+    isInFootnoteList && !isInBlockquote ? "first:indent-[-0.7em]" : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return <p className={className}>{props.children}</p>;
 };
 
-export const Quote: Components["blockquote"] = (props) => (
-  <blockquote>
-    <BlockquoteContext.Provider value={true}>
-      {props.children}
-    </BlockquoteContext.Provider>
-  </blockquote>
-);
+export const Quote: Components["blockquote"] = (props) => {
+  const isInFootnoteList = useContext(FootnoteContext);
+  return (
+    <blockquote
+      className={
+        isInFootnoteList ? "text-[0.87em] pl-3 my-2" : "text-[0.93em] pl-4 my-4"
+      }
+    >
+      <BlockquoteContext.Provider value={true}>
+        {props.children}
+      </BlockquoteContext.Provider>
+    </blockquote>
+  );
+};
 
 export const Div: Components["div"] = (props) => {
   if (props.className === FOOTNOTE) {
-    return <div className="my-2">{props.children}</div>;
+    return <div className="my-2 ml-3 text-[0.93em]">{props.children}</div>;
   }
   if (props.className === FOOTNOTE_LIST) {
     return (
@@ -61,4 +62,12 @@ export const Anchor: Components["a"] = (props) => (
     rel="noopener noreferrer"
     className="underline"
   />
+);
+
+export const OrderedList: Components["ol"] = (props) => (
+  <ol className="list-decimal ml-3">{props.children}</ol>
+);
+
+export const UnorderedList: Components["ul"] = (props) => (
+  <ol className="list-disc ml-3">{props.children}</ol>
 );
