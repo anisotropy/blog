@@ -25,6 +25,7 @@ body {
 
 ol {
   list-style: decimal;
+  padding-inline-start: 1.5em;
 }
 
 ul {

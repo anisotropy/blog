@@ -19,7 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${mainKrFont.variable} antialiased`}>
+    <html
+      lang="ko"
+      className={`${mainKrFont.variable} antialiased leading-[1.7em] max-w-prose mx-auto p-10 text-justify`}
+    >
       <body>{children}</body>
     </html>
   );

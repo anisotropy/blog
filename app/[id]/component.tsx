@@ -85,7 +85,7 @@ export const PageViewer = (props: {
     { timeZone: "Asia/Seoul" }
   );
   return (
-    <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
+    <div className="break-all">
       <nav className="mb-10 text-right">
         <Link href="/" className="text-[0.9em] underline decoration-current/30">
           목차로 이동

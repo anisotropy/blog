@@ -22,7 +22,7 @@ const PageListItem = (props: {
 export const HomeViewer = (props: {
   pageList: { id: string; title: string; createdTime: string }[];
 }) => (
-  <div className="max-w-prose mx-auto p-10 text-justify break-all leading-[1.7em]">
+  <div className="break-all">
     <h1 className="text-3xl text-center">짧은 글</h1>
     <section className="ml-3">
       <h2 className="text-xl mt-20">목차</h2>
