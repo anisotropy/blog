@@ -1,4 +1,12 @@
-import Link from "next/link";
+import PrimitiveLink from "next/link";
+import { ComponentProps } from "react";
+
+export const Link = (props: ComponentProps<typeof PrimitiveLink>) => (
+  <PrimitiveLink
+    {...props}
+    className={`border-b border-current/30 ${props.className}`}
+  />
+);
 
 const PageListItem = (props: {
   id: string;
@@ -12,7 +20,7 @@ const PageListItem = (props: {
   });
   return (
     <li key={id} className="my-2">
-      <Link className="underline decoration-current/30" href={`/${props.id}`}>
+      <Link href={`/${props.id}`}>
         {title} ({createdTime})
       </Link>
     </li>

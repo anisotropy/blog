@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 import Markdown, { Components } from "react-markdown";
 import { FOOTNOTE, FOOTNOTE_LIST } from "./converter";
 import rehypeRaw from "rehype-raw";
-import Link from "next/link";
+import { Link } from "../component";
 
 const BlockquoteContext = createContext(false);
 
@@ -57,15 +57,9 @@ const Div: Components["div"] = (props) => {
   return <div>{props.children}</div>;
 };
 
-// TODO: 스타일을 global.css에 추가
 const Anchor: Components["a"] = (props) =>
   props.href ? (
-    <Link
-      href={props.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="underline decoration-current/30"
-    >
+    <Link href={props.href} target="_blank" rel="noopener noreferrer">
       {props.children}
     </Link>
   ) : (
@@ -111,7 +105,7 @@ export const PageViewer = (props: {
   return (
     <div>
       <nav className="mb-10 text-right">
-        <Link href="/" className="text-[0.9em] underline decoration-current/30">
+        <Link href="/" className="text-[0.9em]">
           목차로 이동
         </Link>
       </nav>
